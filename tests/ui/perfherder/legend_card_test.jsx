@@ -1,8 +1,13 @@
 import React from 'react';
-import { cleanup, render, waitForElement } from '@testing-library/react';
+import {
+  cleanup,
+  fireEvent,
+  render,
+  waitForElement,
+} from '@testing-library/react';
 
 import LegendCard from '../../../ui/perfherder/graphs/LegendCard';
-import { legendCardText } from '../../../ui/perfherder/constants';
+import { unknownFrameworkMessage } from '../../../ui/perfherder/constants';
 
 const testData = [
   {
@@ -16,6 +21,7 @@ const testData = [
     platform: 'linux64',
     projectId: 1,
     repository_name: 'mozilla-central',
+    application: 'firefox',
     resultSetData: [],
     signatureHash: '9c0028a9c871b51c8296485c8fc09b21fe41eec0',
     signature_id: 1647493,
@@ -44,13 +50,13 @@ const colors = [
   ['blue', '#1752b8'],
 ];
 
-const legendCard = (series, testData) =>
+const legendCard = (series, testData, updateState = () => {}) =>
   render(
     <LegendCard
       series={series}
       testData={testData}
       frameworks={[{ id: 1, name: 'talos' }]}
-      updateState={() => {}}
+      updateState={updateState}
       updateStateParams={() => {}}
       colors={colors}
     />,
@@ -69,7 +75,29 @@ test('legend card with incorrect framework displays the unknown framework badge 
   const { queryByText } = legendCard(testData[1], testData);
 
   const frameworkBadge = await waitForElement(() =>
-    queryByText(legendCardText.unknownFrameworkMessage),
+    queryByText(unknownFrameworkMessage),
   );
   expect(frameworkBadge).toBeInTheDocument();
+});
+
+test('legend card displays the application badge', async () => {
+  const updateStateMock = jest.fn();
+  const { queryByText } = legendCard(testData[0], testData, updateStateMock);
+
+  const applicationBtn = await waitForElement(() => queryByText('firefox'));
+  expect(applicationBtn).toBeInTheDocument();
+});
+
+test('click on legend card displays the Test Data Modal', async () => {
+  const updateStateMock = jest.fn();
+  const { queryByText } = legendCard(testData[0], testData, updateStateMock);
+
+  const applicationBtn = await waitForElement(() => queryByText('firefox'));
+  fireEvent.click(applicationBtn);
+
+  expect(updateStateMock.mock.calls).toHaveLength(1);
+  expect(updateStateMock.mock.calls[0][0]).toStrictEqual({
+    options: { option: 'addRelatedApplications', relatedSeries: testData[0] },
+    showModal: true,
+  });
 });

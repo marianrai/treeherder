@@ -3,10 +3,12 @@ export const tValueConfidence = 5; // Anything above this is "high" in confidenc
 
 // Backend server endpoints
 export const endpoints = {
-  issueTrackers: '/performance/issue-tracker/',
-  frameworks: '/performance/framework/',
-  alertSummary: '/performance/alertsummary/',
   alert: '/performance/alert/',
+  alertSummary: '/performance/alertsummary/',
+  frameworks: '/performance/framework/',
+  issueTrackers: '/performance/issue-tracker/',
+  summary: '/performance/summary/',
+  validityDashboard: '/performance/validity-dashboard/',
 };
 
 export const noiseMetricTitle = 'noise metric';
@@ -21,10 +23,6 @@ export const filterText = {
   inputPlaceholder: 'filter text e.g. linux tp5o',
 };
 
-export const legendCardText = {
-  unknownFrameworkMessage: 'unknown framework',
-};
-
 export const selectorCardText = {
   invalidRevision: 'Invalid revision',
   invalidRevisionLength: 'Revision must be at least 40 characters',
@@ -37,6 +35,7 @@ export const compareTableText = {
 
 export const noResultsMessage = 'No results to show';
 export const noDataFoundMessage = title => `No Data Found for ${title}`;
+export const unknownFrameworkMessage = 'unknown framework';
 
 export const summaryStatusMap = {
   all: -1,
@@ -62,12 +61,21 @@ export const alertStatusMap = {
 };
 
 export const graphColors = [
-  ['scarlet', '#b81752'],
-  ['turquoise', '#17a2b8'],
-  ['green', '#19a572'],
-  ['brown', '#b87e17'],
-  ['darkorchid', '#9932cc'],
-  ['blue', '#1752b8'],
+  ['orange', '#FFB851'],
+  ['fire-red', '#C92D2F'],
+  ['cerulean', '#16BCDE'],
+  ['blue-bell', '#464876'],
+  ['purple', '#921181'],
+  ['dark-puce', '#4C3146'],
+];
+
+export const graphSymbols = [
+  ['circle', 'outline'],
+  ['square', 'outline'],
+  ['triangleUp', 'outline'],
+  ['circle', 'fill'],
+  ['square', 'fill'],
+  ['triangleUp', 'fill'],
 ];
 
 export const phFrameworksWithRelatedBranches = [

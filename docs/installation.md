@@ -67,14 +67,6 @@ Both Django's runserver and webpack-dev-server will automatically refresh every 
 !!! note
     There will be no data to display until the ingestion tasks are run.
 
-### Running the migrations
-
-To run the Django migrations:
-
-```bash
-docker-compose run backend sh -c "./initialize_data.sh"
-```
-
 ### Using the minified UI
 
 If you would like to use the minified production version of the UI with the development backend:
@@ -114,6 +106,16 @@ Alternatively, you can `export` that value in your terminal prior to executing
 
 ```bash
 DATABASE_URL=mysql://user:password@hostname/treeherder docker-compose up
+```
+
+### Deleting the MySql database
+
+The MySql database is kept locally and is not destroyed when the Docker containers are destroyed.
+If you want to start from scratch type the following commands:
+
+```bash
+docker-compose down
+docker volume rm treeherder_mysql_data
 ```
 
 ### Running the ingestion tasks
