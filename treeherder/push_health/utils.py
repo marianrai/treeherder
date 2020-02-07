@@ -1,6 +1,13 @@
-def clean_test(test_name):
+def clean_test(action, test, signature, message):
     try:
-        clean_name = str(test_name) if test_name else 'Non-Test Error'
+        clean_name = 'Non-Test Error'
+        if action == 'test_result':
+            clean_name = test
+        elif action == 'crash':
+            clean_name = signature
+        elif action == 'log':
+            clean_name = message if len(message) < 50 else '{}...'.format(message[:50])
+
     except UnicodeEncodeError:
         return ''
 
